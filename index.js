@@ -1,6 +1,5 @@
 const Twitter = require('twitter')
 const MarkovGen = require('markov-generator')
-const tipots = require('this-is-probably-ok-to-say')
 const schedule = require('node-schedule')
 const unescape = require('lodash.unescape')
 
@@ -152,7 +151,7 @@ class TwitterBot {
 
     let tweet = markov.makeChain()
 
-    while (tweet.length > 140 || !tipots(tweet) || this.checkForBannedWords(tweet) || this.checkForAts(tweet) || this.checkForHashtags(tweet)) {
+    while (tweet.length > 140 || this.checkForBannedWords(tweet) || this.checkForAts(tweet) || this.checkForHashtags(tweet)) {
       tweet = markov.makeChain()
     }
 
@@ -176,7 +175,7 @@ class TwitterBot {
     let replyString = '@' + replyToUser + ' '
     let length = 140 - replyString.length
 
-    while (tweet.length > length || !tipots(tweet) || this.checkForBannedWords(tweet) || this.checkForHashtags(tweet) || this.checkForAts(tweet)) {
+    while (tweet.length > length || this.checkForBannedWords(tweet) || this.checkForHashtags(tweet) || this.checkForAts(tweet)) {
       tweet = markov.makeChain()
     }
     if (callback) { return callback(replyString + tweet) }
